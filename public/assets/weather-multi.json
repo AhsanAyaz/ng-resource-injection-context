@@ -1,0 +1,14 @@
+[
+  {
+    "city": "Milan",
+    "temperature": 25,
+    "condition": "Sunny",
+    "icon": "assets/sunny.png"
+  },
+  {
+    "city": "Stockholm",
+    "temperature": -2,
+    "condition": "Cloudy & Snow",
+    "icon": "assets/snowy.png"
+  }
+]
