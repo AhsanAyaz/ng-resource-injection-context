@@ -23,46 +23,70 @@ interface WeatherData {
   selector: 'app-weather-info',
   imports: [FormsModule],
   template: `
-    <div class="flex flex-col items-center gap-4">
-      <div class="form-control">
-        <label class="label cursor-pointer">
-          <span class="label-text">Multicity</span>
-          <input
-            (ngModelChange)="onModeChange($event)"
-            [(ngModel)]="multiMode"
-            type="checkbox"
-            class="toggle"
-          />
-        </label>
-      </div>
-      @if (multiMode()) {
-      <select [(ngModel)]="city" class="select select-primary w-full max-w-xs">
-        @for(city of cities; track city) {
-        <option [value]="city">{{ city }}</option>
+    <div class="card bg-base-200 w-96 shadow-xl mx-auto">
+      <div class="card-body flex flex-col items-center gap-4">
+        <div class="form-control w-full">
+          <label class="label cursor-pointer">
+            <span class="label-text">Multicity</span>
+            <input
+              (ngModelChange)="onModeChange($event)"
+              [(ngModel)]="multiMode"
+              type="checkbox"
+              class="toggle toggle-primary"
+            />
+          </label>
+        </div>
+        @if (multiMode()) {
+        <select [(ngModel)]="city" class="select select-primary w-full">
+          @for(city of cities; track city) {
+          <option [value]="city">{{ city }}</option>
+          }
+        </select>
+        } @else {
+        <button class="btn btn-block btn-primary btn-outline" (click)="fetch()">
+          Fetch Weather
+        </button>
         }
-      </select>
-      } @else {
-      <button class="btn btn-primary btn-outline" (click)="fetch()">
-        Fetch Weather
-      </button>
-      }
 
-      <button class="btn btn-error btn-outline" (click)="fetchWithError()">
-        Fetch Weather with error
-      </button>
-      @if (weatherResource.isLoading()) {
-      <div>Loading...</div>
-      } @else if (weatherResource.error()) {
-      <div>Error: {{ weatherResource.error() }}</div>
-      } @else if (weatherResource.value()) {
-      <img
-        [src]="weatherResource.value()?.icon"
-        class="w-20 object-fit"
-        alt="weather icon"
-      />
-      <p>Temperature: {{ weatherResource.value()?.temperature }}</p>
-      <p>Condition: {{ weatherResource.value()?.condition }}</p>
-      }
+        <button
+          class="btn btn-block btn-error btn-outline"
+          (click)="fetchWithError()"
+        >
+          Fetch Weather with error
+        </button>
+        @if (weatherResource.isLoading()) {
+        <span class="loading loading-spinner loading-lg"></span>
+        } @else if (weatherResource.error()) {
+        <div role="alert" class="alert alert-error">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="h-6 w-6 shrink-0 stroke-current"
+            fill="none"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+          <span>Error: {{ weatherResource.error() }}</span>
+        </div>
+        } @else if (weatherResource.value()) {
+        <img
+          [src]="weatherResource.value()?.icon"
+          class="w-20 object-fit"
+          alt="weather icon"
+        />
+        <p class="text-2xl">
+          Temperature: {{ weatherResource.value()?.temperature }}
+        </p>
+        <p class="text-xl">
+          Condition: {{ weatherResource.value()?.condition }}
+        </p>
+        }
+      </div>
     </div>
   `,
 })
