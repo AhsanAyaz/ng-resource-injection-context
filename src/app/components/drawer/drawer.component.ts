@@ -9,4 +9,5 @@ import { Route, RouterLink, RouterLinkActive } from '@angular/router';
 })
 export class DrawerComponent {
   links = input.required<Route[]>();
+  isOpen = input<boolean>();
 }

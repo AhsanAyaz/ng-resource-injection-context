@@ -1,4 +1,9 @@
-<app-header title="Chapter 5" />
-<app-drawer [links]="links">
-  <router-outlet></router-outlet>
+<app-drawer [isOpen]="isDrawerOpen()" [links]="links">
+  <app-header
+    (toggleDrawerClick)="toggleDrawer()"
+    title="Angular Resource on Demand"
+  />
+  <main class="p-4">
+    <router-outlet></router-outlet>
+  </main>
 </app-drawer>

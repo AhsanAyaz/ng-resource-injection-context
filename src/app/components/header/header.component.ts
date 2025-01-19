@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 export type AppLink = {
@@ -15,4 +15,5 @@ export type AppLink = {
 export class HeaderComponent {
   title = input.required<string>();
   links = input<AppLink[]>([]);
+  toggleDrawerClick = output();
 }
