@@ -14,8 +14,8 @@ type WeatherRequestState = 'idle' | 'ready' | 'simulateError';
 
 type WeatherResourceConfig = {
   requestState: WeatherRequestState;
-  city?: City;
   isMultiCityMode: boolean;
+  selectedCity: City;
 };
 
 @Component({
@@ -92,29 +92,29 @@ type WeatherResourceConfig = {
   `,
 })
 export class WeatherInfoComponent {
-  cities: City[] = ['Stockholm', 'Milan'];
-  isMultiCityMode = signal<boolean>(false);
-  selectedCity = signal<City>(this.cities[0]);
   weatherRequestState = signal<WeatherRequestState>('idle');
+  isMultiCityMode = signal<boolean>(false);
+  cities: City[] = ['Stockholm', 'Milan'];
+  selectedCity = signal<City>(this.cities[0]);
   weatherResource = resource<
     WeatherData | undefined,
     WeatherResourceConfig | undefined
   >({
     request: () => {
-      if (this.weatherRequestState() == 'idle') {
+      if (this.weatherRequestState() === 'idle') {
         return undefined;
       }
       return {
         requestState: this.weatherRequestState(),
-        city: this.selectedCity(),
         isMultiCityMode: this.isMultiCityMode(),
+        selectedCity: this.selectedCity(),
       };
     },
-    loader: async ({ abortSignal, request: requestConfig }) => {
-      if (!requestConfig) {
+    loader: async ({ abortSignal, request }) => {
+      if (!request) {
         return undefined;
       }
-      const { requestState, city, isMultiCityMode } = requestConfig;
+      const { requestState, isMultiCityMode, selectedCity } = request;
       const response = await new Promise<Response>((resolve) => {
         setTimeout(() => {
           const url = isMultiCityMode
@@ -132,7 +132,7 @@ export class WeatherInfoComponent {
       const data = await response.json();
       if (isMultiCityMode) {
         const weatherInfo = (data as WeatherData[]).find(
-          (info) => info.city === city
+          (info) => info.city === selectedCity
         );
         if (!weatherInfo) {
           throw new Error('Weather info not found');
