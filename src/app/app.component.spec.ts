@@ -14,16 +14,18 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'ng-resource-injection-context' title`, () => {
+  it(`should have the 'ng-resource-on-demand' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('ng-resource-injection-context');
+    expect(app.title).toEqual('ng-resource-on-demand');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, ng-resource-injection-context');
+    expect(compiled.querySelector('h1')?.textContent).toContain(
+      'Hello, ng-resource-on-demand'
+    );
   });
 });
